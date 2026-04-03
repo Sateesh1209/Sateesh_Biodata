@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Sateesh Kumar | Profile</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #ffffff;
+    color: #333;
+}
+
+/* GOLD */
+.gold {
+    color: #b38b2e;
+}
+
+/* HERO */
+.hero {
+    padding: 40px 15px 25px;
+    text-align: center;
+}
+
+.logo {
+    width: 90px;
+    margin-bottom: 12px;
+}
+
+.hero h1 {
+    font-family: 'Cinzel';
+    font-size: 30px;
+}
+
+.hero p {
+    font-size: 14px;
+    color: #666;
+}
+
+/* DIVIDER */
+.main-divider {
+    width: 80%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b38b2e, transparent);
+    margin: 20px auto;
+}
+
+/* SECTION */
+.section {
+    padding: 22px 12px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* TITLE */
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Cinzel';
+    font-size: 18px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+    gap: 10px;
+}
+
+/* CARD */
+.card {
+    padding: 12px;
+    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #eee;
+    font-size: 13px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+/* HOVER (CLEAN HIGHLIGHT) */
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+/* TAP (MOBILE) */
+.card:active {
+    transform: scale(0.97);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.06);
+}
+
+/* TEXT */
+.text {
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* FLOAT BUTTON */
+.float-btn {
+    position: fixed;
+    bottom: 18px;
+    right: 18px;
+    background: #25D366;
+    color: white;
+    padding: 12px 14px;
+    border-radius: 50%;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+    <img src="om.png" class="logo">
+    <h1 class="gold">Sateesh Kumar Nunna</h1>
+    <p>Data Engineer | MS Computer Science (USA)</p>
+</div>
+
+<div class="main-divider"></div>
+
+<!-- ABOUT -->
+<div class="section">
+    <h2 class="gold">About</h2>
+    <p class="text">
+        I like to keep things simple and positive, value family and relationships, and believe in growing together with understanding and respect.
+    </p>
+</div>
+
+<!-- PERSONAL DETAILS -->
+<div class="section">
+    <h2 class="gold">Personal Details</h2>
+    <div class="grid">
+        <div class="card">DOB: 12 Jan 1998</div>
+        <div class="card">Time of Birth: 5:50 PM</div>
+        <div class="card">Height: 5'10"</div>
+        <div class="card">Rashi: Mithuna</div>
+        <div class="card">Nakshatra: Punarvasu</div>
+        <div class="card">Religion: Hindu</div>
+        <div class="card">Caste: Devanga</div>
+        <div class="card">Gotram: Shandilya Mahamuni</div>
+    </div>
+</div>
+
+<!-- CAREER -->
+<div class="section">
+    <h2 class="gold">Career</h2>
+    <div class="grid">
+        <div class="card">MS in Computer Science - USA</div>
+        <div class="card">Data Engineer - Infosys USA</div>
+    </div>
+</div>
+
+<!-- FAMILY -->
+<div class="section">
+    <h2 class="gold">Family</h2>
+    <div class="grid">
+        <div class="card">Father: Nunna Raju (Late)</div>
+        <div class="card">Mother: Nunna Raja Rajeswari, Homemaker</div>
+        <div class="card">Brother: Software Engineer, USA</div>
+        <div class="card">Sister: DevOps Engineer, Bangalore</div>
+    </div>
+</div>
+
+<!-- PERSONALITY -->
+<div class="section">
+    <h2 class="gold">Personality</h2>
+    <p class="text">
+        Calm, understanding, and responsible, with a positive mindset and respect for others.
+    </p>
+</div>
+
+<!-- EXPECTATIONS -->
+<div class="section">
+    <h2 class="gold">Expectations</h2>
+    <p class="text">
+        Looking for a kind, understanding partner with good family values and a balanced outlook towards life.
+    </p>
+</div>
+
+<!-- CONTACT -->
+<div class="section">
+    <h2 class="gold">Contact</h2>
+    <div class="grid">
+        <div class="card">
+            <a href="tel:9618586957" style="text-decoration:none; color:#333;">Call</a>
+        </div>
+        <div class="card">
+            <a href="https://wa.me/919618586957" style="text-decoration:none; color:#333;">WhatsApp</a>
+        </div>
+    </div>
+</div>
+
+<!-- FLOAT -->
+<a href="https://wa.me/919618586957" class="float-btn">💬</a>
+
+</body>
+</html>
