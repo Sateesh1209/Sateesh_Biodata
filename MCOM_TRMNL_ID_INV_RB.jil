@@ -1,0 +1,193 @@
+/* ------------------- HMC1_ON_DEMAND_ADS_MCOM_TRMNL_ID_INV_DDL_ROLLBACK_DEPLOY_CM ----------------------- */
+
+insert_job: HMC1_ON_DEMAND_ADS_MCOM_TRMNL_ID_INV_DDL_ROLLBACK_DEPLOY_CM  job_type: CMD
+box_name: HMC1_ON_DEMAND_ADS_SCRIPTEXEC_BX
+command: ksh ${MC1_MC1SMN_OT_DIR}/DDL/mcom_trmnl_id_inv_deploy_script_rb.sh
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to rollback mcom_trmnl_id_inv table to hive"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 0
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_CM ----------------------- */
+
+update_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_CM   job_type: CMD
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_gen2_common_load.ksh ${MC1_MC1SMN_PRTS_DIR}/MCOM_TRMNL_ID_INV_STG_GEN2.prm
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_LOAD_CM ---------------------- */
+
+update_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_LOAD_CM   job_type: CMD
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_gen2_common_load.ksh ${MC1_MC1SMN_PRTS_DIR}/MCOM_TRMNL_ID_INV_PERM_GEN2.prm
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_RECON_CHECK_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_RECON_CHECK_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_RECON_CHECK_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_dq_recon_chk_impala.ksh MCM_ADS_DQ_STAT_IMPALA.sql STG MCOM_TRMNL_ID_INV_STG
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to run DQ Recon check for MCOM_TRMNL_ID_INV_STG table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_CODE_CHECK_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_CODE_CHECK_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_dq_recon_chk_impala.ksh MCM_ADS_DQ_STAT_IMPALA.sql CODE MCOM_TRMNL_ID_INV_STG
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_RECON_CHECK_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to run Code check for MCOM_TRMNL_ID_INV_STG table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOGIC_CHECK_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOGIC_CHECK_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_dq_recon_chk_impala.ksh MCM_ADS_DQ_STAT_IMPALA.sql LOGIC MCOM_TRMNL_ID_INV_STG
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_CODE_CHECK_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to run Logic check for MCOM_TRMNL_ID_INV_STG table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_LOAD_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_LOAD_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_gen2_common_load.ksh ${MC1_MC1SMN_PRTS_DIR}/MCOM_TRMNL_ID_INV_PRE_PERM_GEN2.prm
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOGIC_CHECK_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to load MCOM_TRMNL_ID_INV_PRE_PERM table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_RECON_CHECK_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_RECON_CHECK_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_dq_recon_chk_impala.ksh MCM_ADS_DQ_STAT_IMPALA.sql PRE_PERM MCOM_TRMNL_ID_INV_PRE_PERM
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_LOAD_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to run DQ Recon check for MCOM_TRMNL_ID_INV_PRE_PERM table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_RECON_CHECK_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_RECON_CHECK_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_dq_recon_chk_impala.ksh MCM_ADS_DQ_STAT_IMPALA.sql PERM MCOM_TRMNL_ID_INV
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_LOAD_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to run DQ Recon check for MCOM_TRMNL_ID_INV table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_LOAD_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_LOAD_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_gen2_common_load.ksh ${MC1_MC1SMN_PRTS_DIR}/MCOM_TRMNL_ID_INV_ERR_GEN2.prm
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_RECON_CHECK_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to load MCOM_TRMNL_ID_INV_ERR table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_RECON_CHECK_CM ----------------------- */
+
+insert_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_RECON_CHECK_CM   job_type: CMD
+box_name: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX
+command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_dq_recon_chk_impala.ksh MCM_ADS_DQ_STAT_IMPALA.sql ERR MCOM_TRMNL_ID_INV_ERR
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_LOAD_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to run DQ Recon check for MCOM_TRMNL_ID_INV_ERR table"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 1
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
+timezone: US/Eastern
+
+/* ------------------- delete legacy GEN2 jobs ---------------------- */
+delete_job:HMC1_ON_DEMAND_ADS_MCOM_TRMNL_ID_INV_CLEANUP_DEPLOY_CM
