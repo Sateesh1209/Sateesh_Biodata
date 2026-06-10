@@ -8,7 +8,7 @@ owner: <<OWNER>>
 permission: gx,ge
 date_conditions: 0
 condition: s(HMC1_ADS_MAINTENANCE_HOLD)
-description: "This job is used to deploy mcom_trmnl_id_inv table to spark"
+description: "This job is used to migrate MCOM_TRMNL_ID_INV table to spark"
 std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
 std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
 alarm_if_fail: 0
@@ -22,7 +22,7 @@ timezone: US/Eastern
 
 update_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX   job_type: BOX
 condition: s(HMC1_D_ADS_BANK_CHK_BEGIN_BX) & n(HMC1_W_COMPAC_MCOM_TRMNL_ID_INV_CM) & n(HMC1_W_COMPAC_MCOM_TRMNL_ID_INV_ERR_CM)
-description: "This box contains jobs for loading the stage and perm table for terminal inventory"
+description: "This box contains jobs for loading the stage, perm and error table for merchant terminal ID inventory"
 
 /* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_CM ----------------------- */
 
@@ -37,34 +37,14 @@ command: ksh ${MC1_MC1SMN_SBIN_DIR}/mcm_ads_gen_common_load_spark_cluster.ksh MC
 condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
 
 /* ------------------- delete legacy Hive jobs ---------------------- */
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_LOAD_CM
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_RECON_CHECK_CM
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_RECON_CHECK_CM
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_LOAD_CM
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_RECON_CHECK_CM
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_RECON_CHECK_CM
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOGIC_CHECK_CM
-delete_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_CODE_CHECK_CM
-
-/* ------------------- HMC1_ON_DEMAND_ADS_MCOM_TRMNL_ID_INV_CLEANUP_DEPLOY_CM ----------------------- */
-
-insert_job: HMC1_ON_DEMAND_ADS_MCOM_TRMNL_ID_INV_CLEANUP_DEPLOY_CM  job_type: CMD
-box_name: HMC1_ON_DEMAND_ADS_SCRIPTEXEC_BX
-command: ksh ${MC1_MC1SMN_OT_DIR}/DDL/CLEANUP_MCOM_TRMNL_ID_INV_BACKUP.sh
-machine: <<MACHINE>>
-owner: <<OWNER>>
-permission: gx,ge
-date_conditions: 0
-condition: s(HMC1_ADS_MAINTENANCE_HOLD)
-description: "This job is used to cleanup MCOM_TRMNL_ID_INV backup tables after spark migration"
-std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
-std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
-alarm_if_fail: 0
-profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
-job_load: 1
-priority: 50
-alarm_if_terminated: 0
-timezone: US/Eastern
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_LOAD_CM
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_ERR_RECON_CHECK_CM
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_RECON_CHECK_CM
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_LOAD_CM
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_PRE_PERM_RECON_CHECK_CM
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_RECON_CHECK_CM
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOGIC_CHECK_CM
+delete_job:HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_CODE_CHECK_CM
 
 /* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_DQ_CHECK_CM ----------------------- */
 
@@ -84,4 +64,24 @@ profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
 job_load: 2
 priority: 2
 alarm_if_terminated: 1
+timezone: US/Eastern
+
+/* ------------------- HMC1_ON_DEMAND_ADS_MCOM_TRMNL_ID_INV_CLEANUP_DEPLOY_CM ----------------------- */
+
+insert_job: HMC1_ON_DEMAND_ADS_MCOM_TRMNL_ID_INV_CLEANUP_DEPLOY_CM  job_type: CMD
+box_name: HMC1_ON_DEMAND_ADS_SCRIPTEXEC_BX
+command: ksh ${MC1_MC1SMN_OT_DIR}/DDL/CLEANUP_MCOM_TRMNL_ID_INV_BACKUP.sh
+machine: <<MACHINE>>
+owner: <<OWNER>>
+permission: gx,ge
+date_conditions: 0
+condition: s(HMC1_ADS_MAINTENANCE_HOLD)
+description: "This job is used to cleanup MCOM_TRMNL_ID_INV tables backup"
+std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
+std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
+alarm_if_fail: 0
+profile: "/project/haas/mc1/mc1_1h/app/home/.autosys"
+job_load: 1
+priority: 50
+alarm_if_terminated: 0
 timezone: US/Eastern
