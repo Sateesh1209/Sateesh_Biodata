@@ -55,7 +55,7 @@ machine: <<MACHINE>>
 owner: <<OWNER>>
 permission: ge,gx
 date_conditions: 0
-condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_LOAD_CM) & n(HMC1_ADS_MAINTENANCE_HOLD)
+condition: s(HMC1_D_ADS_MCOM_TRMNL_ID_INV_PERM_LOAD_CM) & s(HMC1_ADS_MAINTENANCE_HOLD)
 description: "This job is used to run DQ Logic check for MCOM_TRMNL_ID_INV table"
 std_out_file: "${MC1_MC1SMN_LOG_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.log"
 std_err_file: "${MC1_MC1SMN_ERROR_DIR}/${LOG_DATE}_${TIME_STAMP}_${AUTO_JOB_NAME}.err"
