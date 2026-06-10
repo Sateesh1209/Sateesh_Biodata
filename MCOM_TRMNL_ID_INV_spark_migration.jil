@@ -21,7 +21,7 @@ timezone: US/Eastern
 /* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX ----------------------- */
 
 update_job: HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_BX   job_type: BOX
-condition: s(HMC1_D_ADS_BANK_CHK_BEGIN_BX) & n(HMC1_W_COMPAC_MCOM_TRMNL_ID_INV_CM) & n(HMC1_W_COMPAC_MCOM_TRMNL_ID_INV_ERR_CM)
+condition: s(HMC1_ADS_MAINTENANCE_HOLD) & s(HMC1_D_ADS_BANK_CHK_BEGIN_BX) & n(HMC1_W_COMPAC_MCOM_TRMNL_ID_INV_CM) & n(HMC1_W_COMPAC_MCOM_TRMNL_ID_INV_ERR_CM)
 description: "This box contains jobs for loading the stage, perm and error table for merchant terminal ID inventory"
 
 /* ------------------- HMC1_D_ADS_MCOM_TRMNL_ID_INV_STG_LOAD_CM ----------------------- */
