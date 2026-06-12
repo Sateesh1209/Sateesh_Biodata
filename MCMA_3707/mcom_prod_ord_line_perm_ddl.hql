@@ -76,10 +76,11 @@ comment 'Perm table for Merchant Terminal Order Information for each merchant pr
 ROW FORMAT SERDE
     'org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe'
 WITH SERDEPROPERTIES (
-    'serialization.format' = '')
+    'field.delim' = '',
+    'serialization.format' = '')
 STORED AS INPUTFORMAT
     'org.apache.hadoop.hive.ql.io.parquet.mapred.ParquetInputFormat'
 OUTPUTFORMAT
     'org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat'
 LOCATION
-    '/haas/mc1/rmc/15/rmc/datafiles/${TARGET_DB}/mcom_prod_ord_line';
+    '/haas/mc1/db/mc1_1h/enc/datafiles/${TARGET_DB}/mcom_prod_ord_line';
